@@ -1,0 +1,11 @@
+pytest
+allure-pytest
+pytest-cov
+selenium
+pymysql
+mysql-connector-python
+flask
+flask_sqlalchemy
+flask_migrate
+python-dotenv
+psycopg2-binary
