@@ -1,0 +1,30 @@
+<h2>🔧 管理員後台</h2>
+
+<p><strong>管理員：</strong> {{ user.username }}（{{ user.email }}）</p>
+
+<hr />
+<h3>📦 商品清單</h3>
+
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+  {% for product in products %}
+  <div
+    style="
+      border: 1px solid #aaa;
+      padding: 10px;
+      width: 200px;
+      background: #f4f4f4;
+    "
+  >
+    <p><strong>{{ product.name }}</strong></p>
+    <p>價格：NT${{ '%.2f' % product.price }}</p>
+    <p>描述：{{ product.description or '無' }}</p>
+  </div>
+  {% else %}
+  <p>目前沒有商品。</p>
+  {% endfor %}
+</div>
+
+<!-- 返回會員中心 -->
+<div style="margin-top: 20px">
+  <a href="/member"><button>← 返回會員中心</button></a>
+</div>

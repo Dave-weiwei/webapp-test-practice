@@ -1,0 +1,41 @@
+<h2>商品列表</h2>
+
+<a href="/products/add"><button>➕ 新增商品</button></a>
+<!-- 商品容器 -->
+<div style="display: flex; flex-wrap: wrap; gap: 16px">
+  {% for product in products %}
+  <div
+    class="product-card"
+    style="
+      width: 200px;
+      border: 1px solid #ccc;
+      border-radius: 6px;
+      padding: 10px;
+      background-color: #fafafa;
+    "
+  >
+    <h3 class="product-name" style="margin: 0 0 8px 0">{{ product.name }}</h3>
+    <p
+      class="product-price"
+      style="margin: 0; font-weight: bold; color: #3c3c3c"
+    >
+      NT${{ '%.2f' % product.price }}
+    </p>
+    <p class="product-description" style="font-size: 0.9em; color: #666">
+      {{ product.description or '無描述' }}
+    </p>
+    <p class="product-created" style="font-size: 0.8em; color: #888">
+      上架時間：{{ product.created_at.strftime('%Y-%m-%d %H:%M') }}
+    </p>
+  </div>
+  {% else %}
+  <p>目前沒有商品。</p>
+  {% endfor %}
+</div>
+
+<!-- 回首頁 -->
+<div style="margin-top: 20px">
+  <a href="/">
+    <button style="padding: 6px 16px">← 回首頁</button>
+  </a>
+</div>

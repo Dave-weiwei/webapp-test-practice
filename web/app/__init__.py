@@ -40,5 +40,15 @@ def create_app():
     #member Blueprint
     from .routes.member import member_bp
     app.register_blueprint(member_bp)
+    
+    #calculator Blueprint
+    from .routes.calculator import calculator_bp
+    app.register_blueprint(calculator_bp)
+    
+    from .routes.product import product_bp
+    app.register_blueprint(product_bp)
+    
+    from .routes.admin import admin_bp
+    app.register_blueprint(admin_bp)
 
     return app
