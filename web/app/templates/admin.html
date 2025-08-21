@@ -1,7 +1,7 @@
 <h2>🔧 管理員後台</h2>
 
 <p><strong>管理員：</strong> {{ user.username }}（{{ user.email }}）</p>
-
+<a href="/admin/users"><button>會員管理</button></a>
 <hr />
 <h3>📦 商品清單</h3>
 
@@ -18,6 +18,20 @@
     <p><strong>{{ product.name }}</strong></p>
     <p>價格：NT${{ '%.2f' % product.price }}</p>
     <p>描述：{{ product.description or '無' }}</p>
+
+    <!-- 刪除表單 -->
+    <form
+      method="post"
+      action="/admin/delete/{{ product.id }}"
+      style="margin-top: 8px"
+    >
+      <button
+        type="submit"
+        onclick="return confirm('確認刪除 {{ product.name }} 嗎？')"
+      >
+        刪除
+      </button>
+    </form>
   </div>
   {% else %}
   <p>目前沒有商品。</p>
@@ -27,4 +41,10 @@
 <!-- 返回會員中心 -->
 <div style="margin-top: 20px">
   <a href="/member"><button>← 返回會員中心</button></a>
+</div>
+<!-- 回首頁按鈕 -->
+<div style="margin-top: 10px; text-align: left">
+  <a href="/" style="text-decoration: none">
+    <button style="padding: 4px 12px; font-size: 0.95em">← 回首頁</button>
+  </a>
 </div>

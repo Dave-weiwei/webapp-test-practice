@@ -1,9 +1,9 @@
 from flask import Blueprint, render_template, session, redirect, url_for, flash
 from functools import wraps
+from app.models import User
 
 member_bp = Blueprint('member', __name__)
 
-# 登入檢查裝飾器
 def login_required(view_func):
     @wraps(view_func)
     def wrapper(*args, **kwargs):
@@ -16,7 +16,9 @@ def login_required(view_func):
 @member_bp.route('/member')
 @login_required
 def member_page():
-    return render_template('member.html', username=session.get('username'))
+    user_id = session.get('user_id')
+    user = User.query.get(user_id)
+    return render_template('member.html', user=user)
 
 @member_bp.route('/logout')
 @login_required

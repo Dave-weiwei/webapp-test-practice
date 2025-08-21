@@ -1,5 +1,20 @@
 <h2>會員中心</h2>
 
-<p>歡迎，{{ username }}！您已成功登入。</p>
+<p>歡迎，{{ user.username }}！</p>
+<p>Email：{{ user.email }}</p>
+<p>帳號建立時間：{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</p>
 
+<!-- 如果是管理員，顯示管理員後台連結 -->
+{% if user.is_admin %}
+<a href="/admin"><button>進入管理員後台</button></a>
+{% endif %}
+
+<br /><br />
 <a href="/logout">登出</a>
+
+<!-- 回首頁按鈕 -->
+<div style="margin-top: 10px; text-align: left">
+  <a href="/" style="text-decoration: none">
+    <button style="padding: 4px 12px; font-size: 0.95em">← 回首頁</button>
+  </a>
+</div>

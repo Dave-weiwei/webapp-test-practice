@@ -1,0 +1,44 @@
+<h2>👥 會員管理</h2>
+
+<table border="1" cellpadding="8" style="border-collapse: collapse">
+  <tr>
+    <th>ID</th>
+    <th>帳號</th>
+    <th>Email</th>
+    <th>建立時間</th>
+    <th>角色</th>
+    <th>操作</th>
+  </tr>
+  {% for user in users %}
+  <tr>
+    <td>{{ user.id }}</td>
+    <td>{{ user.username }}</td>
+    <td>{{ user.email }}</td>
+    <td>{{ user.created_at.strftime('%Y-%m-%d %H:%M:%S') }}</td>
+    <td>{% if user.is_admin %} 管理員 {% else %} 會員 {% endif %}</td>
+    <td>
+      {% if user.id != current_admin_id %}
+      <form
+        method="post"
+        action="/admin/delete_user/{{ user.id }}"
+        style="display: inline"
+      >
+        <button
+          type="submit"
+          onclick="return confirm('確定刪除 {{ user.username }}？')"
+        >
+          刪除
+        </button>
+      </form>
+      {% else %}
+      <em>(自己)</em>
+      {% endif %}
+    </td>
+  </tr>
+  {% endfor %}
+</table>
+
+<!-- 返回管理首頁 -->
+<div style="margin-top: 20px">
+  <a href="/admin"><button>← 返回後台</button></a>
+</div>
