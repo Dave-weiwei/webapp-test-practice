@@ -1,0 +1,30 @@
+<h2>✏️ 編輯商品</h2>
+
+<form method="post">
+  <label>商品名稱：</label><br />
+  <input
+    type="text"
+    name="name"
+    value="{{ product.name }}"
+    required
+  /><br /><br />
+
+  <label>價格（NT$）：</label><br />
+  <input
+    type="text"
+    name="price"
+    value="{{ product.price }}"
+    required
+  /><br /><br />
+
+  <label>描述：</label><br />
+  <textarea name="description" rows="4" cols="30">
+{{ product.description }}</textarea
+  ><br /><br />
+
+  <button type="submit">儲存變更</button>
+</form>
+
+<div style="margin-top: 20px">
+  <a href="/admin"><button>← 返回後台</button></a>
+</div>

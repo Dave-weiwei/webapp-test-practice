@@ -1,7 +1,8 @@
-from flask import Blueprint, render_template, session, redirect, url_for, flash
+from flask import Blueprint, render_template, session, redirect, url_for, flash, request
 from functools import wraps
 from app.models import User, Product
 from app import db
+from datetime import datetime
 
 admin_bp = Blueprint("admin", __name__)
 
@@ -62,3 +63,30 @@ def delete_user(user_id):
     db.session.commit()
     flash(f"已刪除會員：{user.username}")
     return redirect(url_for("admin.user_management"))
+# 修改商品
+@admin_bp.route("/admin/edit/<int:product_id>", methods=["GET", "POST"])
+@admin_required
+def edit_product(product_id):
+    product = Product.query.get_or_404(product_id)
+
+    if request.method == "POST":
+        name = request.form["name"].strip()
+        price = request.form["price"].strip()
+        description = request.form["description"].strip()
+
+        try:
+            price_value = float(price)
+            if price_value <= 0:
+                flash("價格必須大於 0")
+            else:
+                product.name = name
+                product.price = price_value
+                product.description = description
+                product.updated_at = datetime.utcnow()  # ✅ 更新時間
+                db.session.commit()
+                flash("商品已更新")
+                return redirect(url_for("admin.admin_dashboard"))
+        except ValueError:
+            flash("價格格式不正確")
+
+    return render_template("admin_edit.html", product=product)

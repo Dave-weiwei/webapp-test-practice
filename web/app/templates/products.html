@@ -27,6 +27,11 @@
     <p class="product-created" style="font-size: 0.8em; color: #888">
       上架時間：{{ product.created_at.strftime('%Y-%m-%d %H:%M') }}
     </p>
+    <p class="product-updated" style="font-size: 0.8em; color: #888">
+      {% if product.updated_at %} 更新時間：{{
+      product.updated_at.strftime('%Y-%m-%d %H:%M') }} {% else %} 更新時間：－
+      {% endif %}
+    </p>
   </div>
   {% else %}
   <p>目前沒有商品。</p>

@@ -18,6 +18,10 @@
     <p><strong>{{ product.name }}</strong></p>
     <p>價格：NT${{ '%.2f' % product.price }}</p>
     <p>描述：{{ product.description or '無' }}</p>
+    <p>
+      更新時間： {% if product.updated_at %} {{
+      product.updated_at.strftime('%Y-%m-%d %H:%M') }} {% else %} - {% endif %}
+    </p>
 
     <!-- 刪除表單 -->
     <form
@@ -32,6 +36,11 @@
         刪除
       </button>
     </form>
+
+    <!-- 商品編輯 -->
+    <a href="/admin/edit/{{ product.id }}">
+      <button style="margin-top: 6px">編輯</button>
+    </a>
   </div>
   {% else %}
   <p>目前沒有商品。</p>
