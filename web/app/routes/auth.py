@@ -1,31 +1,55 @@
-from flask import Blueprint, render_template, request, redirect, url_for, flash, session
+from flask import Blueprint, render_template, request, redirect, url_for, flash, session, jsonify
 from werkzeug.security import generate_password_hash, check_password_hash
 from app.models import User
 from app import db
+from app.utils.validators import is_valid_username, is_valid_password
 
 auth_bp = Blueprint('auth', __name__)
 
 @auth_bp.route('/register', methods=['GET', 'POST'])
 def register():
     if request.method == 'POST':
-        username = request.form['username'].strip()
-        email = request.form['email'].strip()
-        password = request.form['password'].strip()
-        confirm = request.form['confirm'].strip()
+        # ✅ 支援兩種輸入格式
+        if request.is_json:
+            data = request.get_json()
+            username = data.get('username', '').strip()
+            email = data.get('email', '').strip()
+            password = data.get('password', '').strip()
+            confirm = data.get('confirm', '').strip()
+            ajax_mode = True
+        else:
+            username = request.form['username'].strip()
+            email = request.form['email'].strip()
+            password = request.form['password'].strip()
+            confirm = request.form['confirm'].strip()
+            ajax_mode = False
 
+        # ✅ 驗證邏輯
         if not username or not email or not password:
-            flash('欄位不得為空')
+            msg = '欄位不得為空'
+        elif not is_valid_username(username):
+            msg = '使用者名稱需為 4-20 字元，僅可包含英文字母、數字與底線'
         elif password != confirm:
-            flash('密碼與確認不符')
+            msg = '密碼與確認不符'
+        elif not is_valid_password(password):
+            msg = '密碼需至少 8 字元，含數字與特殊符號'
         elif User.query.filter((User.username == username) | (User.email == email)).first():
-            flash('使用者名稱或 Email 已存在')
+            msg = '使用者名稱或 Email 已存在'
         else:
             hashed_pw = generate_password_hash(password)
             new_user = User(username=username, email=email, password=hashed_pw)
             db.session.add(new_user)
             db.session.commit()
+            if ajax_mode:
+                return jsonify({"success": True, "message": "註冊成功"})
             flash('註冊成功，請登入')
             return redirect(url_for('auth.login'))
+
+        # ❌ 錯誤處理
+        if ajax_mode:
+            return jsonify({"success": False, "message": msg})
+        else:
+            flash(msg)
 
     return render_template('register.html')
 

@@ -1,0 +1,21 @@
+services:
+  web:
+    build:
+      context: .
+      dockerfile: Dockerfile.web
+    env_file:
+      - .env
+    ports:
+      - "5000:5000"
+
+  tests:
+    build:
+      context: .
+      dockerfile: Dockerfile.tests
+    env_file:
+      - .env
+    depends_on:
+      web:
+        condition: service_started
+    volumes:
+      - ./reports:/app/reports

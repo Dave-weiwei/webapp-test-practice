@@ -1,18 +1,166 @@
-<!-- 放在 <body> 最上面 -->
-{% with messages = get_flashed_messages() %} {% if messages %}
-<ul style="color: red">
-  {% for msg in messages %}
-  <li>{{ msg }}</li>
-  {% endfor %}
-</ul>
-{% endif %} {% endwith %}
+<!DOCTYPE html>
+<html lang="zh-Hant">
+  <head>
+    <meta charset="UTF-8" />
+    <title>註冊</title>
+    <style>
+      .valid {
+        border: 2px solid green;
+      }
+      .invalid {
+        border: 2px solid red;
+      }
+      .hint {
+        font-size: 0.85em;
+        color: red;
+        margin: 2px 0 10px 0;
+      }
+    </style>
+  </head>
+  <body>
+    <h2>註冊會員</h2>
 
-<h2>註冊</h2>
-<form method="post">
-  使用者名稱：<input name="username" /><br />
-  Email：<input name="email" /><br />
-  密碼：<input type="password" name="password" /><br />
-  確認密碼：<input type="password" name="confirm" /><br />
-  <button type="submit">註冊</button>
-</form>
-<a href="/login">已有帳號？登入</a>
+    <!-- 顯示錯誤訊息 -->
+    <div id="errorMsg" style="color: red; margin-bottom: 10px"></div>
+
+    <!-- 表單 -->
+    <form id="registerForm" novalidate>
+      <label>使用者名稱：</label>
+      <input type="text" name="username" id="username" required />
+      <div id="usernameHint" class="hint"></div>
+
+      <label>Email：</label>
+      <input type="email" name="email" id="email" required />
+      <div id="emailHint" class="hint"></div>
+
+      <label>密碼：</label>
+      <input type="password" name="password" id="password" required />
+      <div id="passwordHint" class="hint"></div>
+
+      <label>確認密碼：</label>
+      <input type="password" name="confirm" id="confirm" required />
+      <div id="confirmHint" class="hint"></div>
+
+      <button type="submit">註冊</button>
+    </form>
+
+    <p>已經有帳號？<a href="/login">登入這裡</a></p>
+
+    <!-- JS 驗證邏輯 -->
+    <script>
+      const form = document.getElementById("registerForm");
+      const errorMsg = document.getElementById("errorMsg");
+
+      const username = document.getElementById("username");
+      const email = document.getElementById("email");
+      const password = document.getElementById("password");
+      const confirm = document.getElementById("confirm");
+
+      const usernameHint = document.getElementById("usernameHint");
+      const emailHint = document.getElementById("emailHint");
+      const passwordHint = document.getElementById("passwordHint");
+      const confirmHint = document.getElementById("confirmHint");
+
+      function validateUsername() {
+        const value = username.value.trim();
+        const pattern = /^[a-zA-Z][a-zA-Z0-9_]{3,19}$/;
+        if (!pattern.test(value)) {
+          username.classList.add("invalid");
+          username.classList.remove("valid");
+          usernameHint.textContent = "需為 4-20 字，英文開頭，可含數字與底線";
+          return false;
+        }
+        username.classList.add("valid");
+        username.classList.remove("invalid");
+        usernameHint.textContent = "";
+        return true;
+      }
+
+      function validateEmail() {
+        const value = email.value.trim();
+        const pattern = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        if (!pattern.test(value)) {
+          email.classList.add("invalid");
+          email.classList.remove("valid");
+          emailHint.textContent = "Email 格式錯誤";
+          return false;
+        }
+        email.classList.add("valid");
+        email.classList.remove("invalid");
+        emailHint.textContent = "";
+        return true;
+      }
+
+      function validatePassword() {
+        const value = password.value.trim();
+        const pattern = /^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}$/;
+        if (!pattern.test(value)) {
+          password.classList.add("invalid");
+          password.classList.remove("valid");
+          passwordHint.textContent = "需至少 8 字元，含數字與特殊符號";
+          return false;
+        }
+        password.classList.add("valid");
+        password.classList.remove("invalid");
+        passwordHint.textContent = "";
+        return true;
+      }
+
+      function validateConfirm() {
+        const pw = password.value.trim();
+        const cf = confirm.value.trim();
+        if (pw !== cf) {
+          confirm.classList.add("invalid");
+          confirm.classList.remove("valid");
+          confirmHint.textContent = "與密碼不一致";
+          return false;
+        }
+        confirm.classList.add("valid");
+        confirm.classList.remove("invalid");
+        confirmHint.textContent = "";
+        return true;
+      }
+
+      // ✔ 改為離開欄位時再驗證（blur）
+      username.addEventListener("blur", validateUsername);
+      email.addEventListener("blur", validateEmail);
+      password.addEventListener("blur", validatePassword);
+      confirm.addEventListener("blur", validateConfirm);
+
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+        const uOk = validateUsername();
+        const eOk = validateEmail();
+        const pOk = validatePassword();
+        const cOk = validateConfirm();
+
+        if (!uOk || !eOk || !pOk || !cOk) {
+          errorMsg.textContent = "請修正所有欄位錯誤後再送出";
+          return;
+        }
+
+        const jsonData = {
+          username: username.value.trim(),
+          email: email.value.trim(),
+          password: password.value.trim(),
+          confirm: confirm.value.trim(),
+        };
+
+        const response = await fetch("/register", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(jsonData),
+        });
+
+        const result = await response.json();
+
+        if (result.success) {
+          alert("註冊成功，即將跳轉登入頁");
+          window.location.href = "/login";
+        } else {
+          errorMsg.textContent = result.message;
+        }
+      });
+    </script>
+  </body>
+</html>

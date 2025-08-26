@@ -63,6 +63,7 @@ def delete_user(user_id):
     db.session.commit()
     flash(f"已刪除會員：{user.username}")
     return redirect(url_for("admin.user_management"))
+
 # 修改商品
 @admin_bp.route("/admin/edit/<int:product_id>", methods=["GET", "POST"])
 @admin_required
