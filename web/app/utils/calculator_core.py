@@ -11,7 +11,7 @@ def evaluate_expression(expression: str) -> float:
     """
 
     # 僅允許數字、小數點、運算符號與括號
-    if not re.fullmatch(r"[0-9+\-*/(). ]+", expression):
+    if not re.fullmatch(r"[0-9eE+\-*/(). ]+", expression):
         raise ValueError("無效的字元")
 
     try:
