@@ -1,0 +1,104 @@
+{
+  "username_cases": [
+    { "id": "001", "input": "test_123", "valid": true, "desc": "標準帳號格式" },
+    { "id": "002", "input": "a123", "valid": true, "desc": "最短長度（4）" },
+    {
+      "id": "003",
+      "input": "zxxxxxxxxxxxxxxxxxx",
+      "valid": true,
+      "desc": "最長長度（20）"
+    },
+    {
+      "id": "004",
+      "input": "a12",
+      "valid": false,
+      "desc": "低於最短長度（3）"
+    },
+    {
+      "id": "005",
+      "input": "zxxxxxxxxxxxxxxxxxxxx",
+      "valid": false,
+      "desc": "高於最長長度（21）"
+    },
+    {
+      "id": "006",
+      "input": "1abc",
+      "valid": false,
+      "desc": "數字開頭（需英文）"
+    },
+    {
+      "id": "007",
+      "input": "_abc",
+      "valid": false,
+      "desc": "底線開頭（需英文）"
+    },
+    {
+      "id": "008",
+      "input": "abcde!@#123",
+      "valid": false,
+      "desc": "含非法符號（非英數底線）"
+    },
+    {
+      "id": "009",
+      "input": "abcde!@#123你",
+      "valid": false,
+      "desc": "含非法符號（含中文）"
+    },
+    { "id": "010", "input": "ab", "valid": false, "desc": "長度不足" },
+    { "id": "011", "input": "abc def", "valid": false, "desc": "含空格" },
+    { "id": "012", "input": "", "valid": false, "desc": "空字串" }
+  ],
+  "password_cases": [
+    {
+      "id": "001",
+      "input": "Aa123456!",
+      "valid": true,
+      "desc": "合法密碼格式（大小寫數符）"
+    },
+    {
+      "id": "002",
+      "input": "abcABC1$",
+      "valid": true,
+      "desc": "混合大小寫數字符號"
+    },
+    {
+      "id": "003",
+      "input": "A1!a1!a1!",
+      "valid": true,
+      "desc": "多次重複組合"
+    },
+    {
+      "id": "004",
+      "input": "12345678",
+      "valid": false,
+      "desc": "只有數字（缺字母符號）"
+    },
+    {
+      "id": "005",
+      "input": "abcdefgh",
+      "valid": false,
+      "desc": "只有小寫字母（缺數字符號）"
+    },
+    {
+      "id": "006",
+      "input": "ABCDEFGH",
+      "valid": false,
+      "desc": "只有大寫字母（缺數字符號）"
+    },
+    { "id": "007", "input": "abcABC123", "valid": false, "desc": "無特殊符號" },
+    { "id": "008", "input": "abcABC!!", "valid": false, "desc": "無數字" },
+    {
+      "id": "009",
+      "input": "A1!1234",
+      "valid": false,
+      "desc": "長度不足（少於 8 字元）"
+    },
+    {
+      "id": "010",
+      "input": "A1!",
+      "valid": false,
+      "desc": "長度不足（少於 8 字元）"
+    },
+    { "id": "011", "input": "", "valid": false, "desc": "空字串" }
+  ]
+}

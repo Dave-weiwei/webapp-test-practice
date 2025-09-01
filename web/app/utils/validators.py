@@ -7,6 +7,7 @@ username_pattern = r'^[a-zA-Z][a-zA-Z0-9_]{3,19}$'
 password_pattern = r'^(?=.*[a-zA-Z])(?=.*\d)(?=.*[\W_]).{8,}$'
 
 def is_valid_username(username: str) -> bool:
+    print(f"帳號長度 = {len(username)}，帳號 = {username}")
     return re.fullmatch(username_pattern, username) is not None
 
 def is_valid_password(password: str) -> bool:
