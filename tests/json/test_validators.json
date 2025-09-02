@@ -69,36 +69,48 @@
     },
     {
       "id": "004",
-      "input": "12345678",
-      "valid": false,
-      "desc": "只有數字（缺字母符號）"
+      "input": "A1!a1!a1!a1!a1!a1!",
+      "valid": true,
+      "desc": "較長密碼"
     },
     {
       "id": "005",
-      "input": "abcdefgh",
+      "input": "12345678",
       "valid": false,
-      "desc": "只有小寫字母（缺數字符號）"
+      "desc": "只有數字（缺字母與符號）"
     },
     {
       "id": "006",
+      "input": "abcdefgh",
+      "valid": false,
+      "desc": "只有小寫字母（缺數字與符號）"
+    },
+    {
+      "id": "007",
       "input": "ABCDEFGH",
       "valid": false,
-      "desc": "只有大寫字母（缺數字符號）"
+      "desc": "只有大寫字母（缺數字與符號）"
     },
-    { "id": "007", "input": "abcABC123", "valid": false, "desc": "無特殊符號" },
-    { "id": "008", "input": "abcABC!!", "valid": false, "desc": "無數字" },
+    { "id": "008", "input": "abcABC123", "valid": false, "desc": "無特殊符號" },
+    { "id": "009", "input": "abcABC!!", "valid": false, "desc": "無數字" },
     {
-      "id": "009",
+      "id": "010",
       "input": "A1!1234",
       "valid": false,
       "desc": "長度不足（少於 8 字元）"
     },
     {
-      "id": "010",
+      "id": "011",
       "input": "A1!",
       "valid": false,
       "desc": "長度不足（少於 8 字元）"
     },
-    { "id": "011", "input": "", "valid": false, "desc": "空字串" }
+    {
+      "id": "012",
+      "input": "!@#$%^&*",
+      "valid": false,
+      "desc": "只有符號（缺字母與數字）"
+    },
+    { "id": "013", "input": "", "valid": false, "desc": "空字串" }
   ]
 }
